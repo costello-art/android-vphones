@@ -3,24 +3,12 @@
               android:layout_height="match_parent"
               android:orientation="horizontal">
 
-    <TextView
-            android:text="@string/hello_world"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/textView"/>
-    <EditText
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText_message"
-            android:layout_below="@+id/textView"
-            android:layout_alignParentLeft="true"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_send"
-            android:id="@+id/button"
-            android:layout_alignBottom="@+id/editText_message"
-            android:layout_toRightOf="@+id/editText_message"
-            android:onClick="sendMessage"/>
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listViewContacts"
+            android:layout_gravity="center_vertical" />
 
+    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+            android:id="@+id/text1"/>
 </LinearLayout>
