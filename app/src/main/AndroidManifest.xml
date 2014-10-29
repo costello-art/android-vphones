@@ -23,7 +23,7 @@
                 android:value="com.sviat.k.androidphones.app.PhonesMain" />
         </activity>
         <activity
-            android:name=".SearchDialog"
+            android:name=".searchDialog"
             android:label="@string/title_activity_search_dialog" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

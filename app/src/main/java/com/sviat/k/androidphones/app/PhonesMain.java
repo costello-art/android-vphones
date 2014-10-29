@@ -52,7 +52,7 @@ public class PhonesMain extends ActionBarActivity {
     }
 
     private void openSearch() {
-        Intent searchDialog = new Intent(this, SearchDialog.class);
+        Intent searchDialog = new Intent(this, com.sviat.k.androidphones.app.searchDialog.class);
         startActivity(searchDialog);
 
     }
