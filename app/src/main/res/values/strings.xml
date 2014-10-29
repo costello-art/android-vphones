@@ -6,5 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="button_send">New Button</string>
     <string name="title_activity_received_message">Your message</string>
+    <string name="action_search">Search</string>
+    <string name="title_activity_search_dialog">Пошук</string>
 
 </resources>
