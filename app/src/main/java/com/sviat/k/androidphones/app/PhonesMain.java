@@ -6,26 +6,23 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-
-public class PhonesMain extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class PhonesMain extends ActionBarActivity implements
+        LoaderManager.LoaderCallbacks<Cursor>,
+        AdapterView.OnItemClickListener,
+        OnContactsIterationListener {
 
     public static final String EXTRA_MESSAGE_TO_RECEIVE = "com.sviat.k.androidphones.app.message_to_send";
 
-    private final static String[] FROM_COLUMNS = {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
-                    ContactsContract.Contacts.DISPLAY_NAME_PRIMARY :
-                    ContactsContract.Contacts.DISPLAY_NAME
-    };
-    private static final int[] TO_IDS = {R.id.text1};
     private ListView listContacts;
     private SimpleCursorAdapter cAdapter;
 
@@ -45,6 +42,8 @@ public class PhonesMain extends ActionBarActivity implements LoaderManager.Loade
         listContacts.setAdapter(cAdapter);
 
         getLoaderManager().initLoader(0, null, this);
+
+        listContacts.setOnItemClickListener(this);
     }
 
 
@@ -122,4 +121,30 @@ public class PhonesMain extends ActionBarActivity implements LoaderManager.Loade
             ContactsContract.Contacts.LOOKUP_KEY,
     };
 
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Cursor c = cAdapter.getCursor();
+
+        c.moveToPosition(position);
+
+        final Uri uri = ContactsContract.Contacts.getLookupUri(
+                c.getLong(ContactsQuery.ID),
+                c.getString(ContactsQuery.LOOKUP_KEY));
+
+        onContactSelected(uri);
+    }
+
+    @Override
+    public void onContactSelected(Uri contactUri) {
+        Intent detailedContact = new Intent(this, DetailedContactView.class);
+
+        detailedContact.setData(contactUri);
+        startActivity(detailedContact);
+    }
+
+    @Override
+    public void onSelectionCleared() {
+
+    }
 }
