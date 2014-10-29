@@ -1,12 +1,17 @@
 package com.sviat.k.androidphones.app;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 
 public class PhonesMain extends ActionBarActivity {
+
+    public static final String EXTRA_MESSAGE_TO_RECEIVE = "com.sviat.k.androidphones.app.message_to_send";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,5 +37,14 @@ public class PhonesMain extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void sendMessage(View view) {
+        Intent intent = new Intent(this, ShowReceivedMessage.class);
+        EditText textToSend = (EditText) findViewById(R.id.editText_message);
+        String message = textToSend.getText().toString();
+        intent.putExtra(EXTRA_MESSAGE_TO_RECEIVE, message);
+
+        startActivity(intent);
     }
 }
