@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="/Users/Sviat/IdeaProjects/AndroidPhones/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-63d66925e2e511646f7a8249b4fe9a6c87517b21.jar"
+        jar="/Users/Sviat/Development/Android SDK/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+    <item
+        dex="/Users/Sviat/IdeaProjects/AndroidPhones/app/build/intermediates/pre-dexed/debug/classes-f6be13bcee9fe1c2552253ccf79020cef56022d6.jar"
+        jar="/Users/Sviat/IdeaProjects/AndroidPhones/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.1.0/classes.jar"
+        jumboMode="false"
+        revision="21.0.1"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
+
+</pre-dex-items>
