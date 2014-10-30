@@ -2,7 +2,6 @@ package com.sviat.k.androidphones.app;
 
 import android.app.LoaderManager;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,17 +10,11 @@ import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 public class PhonesMain extends ActionBarActivity implements
-        LoaderManager.LoaderCallbacks<Cursor>,
-        AdapterView.OnItemClickListener,
-        OnContactsIterationListener {
-
-    public static final String EXTRA_MESSAGE_TO_RECEIVE = "com.sviat.k.androidphones.app.message_to_send";
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String[] fromRows = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
@@ -78,18 +71,11 @@ public class PhonesMain extends ActionBarActivity implements
 
         switch (item.getItemId()) {
             case R.id.action_search:
-                openSearch();
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void openSearch() {
-        Intent searchDialog = new Intent(this, com.sviat.k.androidphones.app.searchDialog.class);
-        startActivity(searchDialog);
-
     }
 
     @Override
@@ -106,31 +92,5 @@ public class PhonesMain extends ActionBarActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Cursor c = cursorAdapter.getCursor();
-
-        c.moveToPosition(position);
-
-        final Uri uri = ContactsContract.Contacts.getLookupUri(
-                c.getLong(ContactsQuery.ID),
-                c.getString(ContactsQuery.LOOKUP_KEY));
-
-        onContactSelected(uri);
-    }
-
-    @Override
-    public void onContactSelected(Uri contactUri) {
-        Intent detailedContact = new Intent(this, DetailedContactView.class);
-
-        detailedContact.setData(contactUri);
-        startActivity(detailedContact);
-    }
-
-    @Override
-    public void onSelectionCleared() {
-
     }
 }
