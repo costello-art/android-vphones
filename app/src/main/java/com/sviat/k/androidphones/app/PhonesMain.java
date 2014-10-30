@@ -22,8 +22,16 @@ public class PhonesMain extends ActionBarActivity implements
         OnContactsIterationListener {
 
     public static final String EXTRA_MESSAGE_TO_RECEIVE = "com.sviat.k.androidphones.app.message_to_send";
-    private final String[] fromRows = new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
-    private final int[] toView = new int[]{android.R.id.text1, android.R.id.text2};
+
+    private final String[] fromRows = new String[]{
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+    };
+
+    private final int[] toView = new int[]{
+            android.R.id.text1,
+            android.R.id.text2
+    };
 
     private SimpleCursorAdapter cursorAdapter;
 
@@ -87,7 +95,7 @@ public class PhonesMain extends ActionBarActivity implements
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(this, uri, projection, null, null,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + "COLLATE LOCALIZED ASC");
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE LOCALIZED ASC");
     }
 
     @Override
