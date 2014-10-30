@@ -1,5 +1,7 @@
 package com.sviat.k.androidphones.app;
 
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +14,10 @@ public class DetailedContactView extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_contact_view);
+        
+        Uri uri = getIntent().getData();
+
+        System.out.println("uri = " + uri);
     }
 
 

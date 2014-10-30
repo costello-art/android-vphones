@@ -22,30 +22,38 @@ public class PhonesMain extends ActionBarActivity implements
         OnContactsIterationListener {
 
     public static final String EXTRA_MESSAGE_TO_RECEIVE = "com.sviat.k.androidphones.app.message_to_send";
+    private final String[] fromRows = new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER};
+    private final int[] toView = new int[]{android.R.id.text1, android.R.id.text2};
 
-    private ListView listContacts;
-    private SimpleCursorAdapter cAdapter;
+    private SimpleCursorAdapter cursorAdapter;
 
+    private final Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+
+    private final String[] projection = new String[]{
+            ContactsContract.CommonDataKinds.Phone._ID,
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_phones_main);
-        listContacts = (ListView) findViewById(R.id.listViewContacts);
+        ListView listContacts = (ListView) findViewById(R.id.listViewContacts);
 
-        cAdapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_2, null,
-                new String[]{ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts.CONTACT_STATUS},
-                new int[]{android.R.id.text1, android.R.id.text2}, 0);
+        cursorAdapter = new SimpleCursorAdapter(
+                this,
+                android.R.layout.simple_list_item_2,
+                null,
+                fromRows,
+                toView,
+                0);
 
-        listContacts.setAdapter(cAdapter);
+        listContacts.setAdapter(cursorAdapter);
 
         getLoaderManager().initLoader(0, null, this);
-
-        listContacts.setOnItemClickListener(this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,53 +86,23 @@ public class PhonesMain extends ActionBarActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        // This is called when a new Loader needs to be created.  This
-        // sample only has one Loader, so we don't care about the ID.
-        // First, pick the base URI to use depending on whether we are
-        // currently filtering.
-        Uri baseUri;
-
-        baseUri = ContactsContract.Contacts.CONTENT_URI;
-
-
-        // Now create and return a CursorLoader that will take care of
-        // creating a Cursor for the data being displayed.
-        String select = "((" + ContactsContract.Contacts.DISPLAY_NAME + " NOTNULL) AND ("
-                + ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1) AND ("
-                + ContactsContract.Contacts.DISPLAY_NAME + " != '' ))";
-        return new CursorLoader(
-                this,
-                baseUri,
-                CONTACTS_SUMMARY_PROJECTION,
-                select,
-                null,
-                ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC");
+        return new CursorLoader(this, uri, projection, null, null,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + "COLLATE LOCALIZED ASC");
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        cAdapter.swapCursor(data);
+        cursorAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        cAdapter.swapCursor(null);
+        cursorAdapter.swapCursor(null);
     }
-
-    // These are the Contacts rows that we will retrieve.
-    static final String[] CONTACTS_SUMMARY_PROJECTION = new String[]{
-            ContactsContract.Contacts._ID,
-            ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.Contacts.CONTACT_STATUS,
-            ContactsContract.Contacts.CONTACT_PRESENCE,
-            ContactsContract.Contacts.PHOTO_ID,
-            ContactsContract.Contacts.LOOKUP_KEY,
-    };
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Cursor c = cAdapter.getCursor();
+        Cursor c = cursorAdapter.getCursor();
 
         c.moveToPosition(position);
 
