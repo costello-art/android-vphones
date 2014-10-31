@@ -16,6 +16,14 @@ import android.widget.SimpleCursorAdapter;
 public class PhonesMain extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    private final Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+
+    private final String[] projection = new String[]{
+            ContactsContract.CommonDataKinds.Phone._ID,
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            ContactsContract.CommonDataKinds.Phone.NUMBER
+    };
+
     private final String[] fromRows = new String[]{
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.NUMBER
@@ -27,14 +35,6 @@ public class PhonesMain extends ActionBarActivity implements
     };
 
     private SimpleCursorAdapter cursorAdapter;
-
-    private final Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-
-    private final String[] projection = new String[]{
-            ContactsContract.CommonDataKinds.Phone._ID,
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-            ContactsContract.CommonDataKinds.Phone.NUMBER
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
