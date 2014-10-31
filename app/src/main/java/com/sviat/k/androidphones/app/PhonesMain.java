@@ -69,13 +69,7 @@ public class PhonesMain extends ActionBarActivity implements
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
