@@ -10,24 +10,14 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".PhonesMain"
+                android:name=".PhoneListActivity"
                 android:label="@string/activity_contacts_list"
                 android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!--
-                 Add intent-filter for search intent action and specify searchable configuration
-                 via meta-data tag. This allows this activity to receive search intents via the
-                 system hooks. In this sample this is only used on older OS versions (pre-Honeycomb)
-                 via the activity search dialog. See the Search API guide for more information:
-                 http://developer.android.com/guide/topics/search/search-dialog.html
-            -->
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
-            </intent-filter>
         </activity>
+
     </application>
 </manifest>
