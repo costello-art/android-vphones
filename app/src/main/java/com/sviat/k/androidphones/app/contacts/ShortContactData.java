@@ -40,7 +40,7 @@ public class ShortContactData implements Serializable {
         this.mLastName = mLastName;
     }
 
-    public String getPhone() {
+    public String getPhoneNumber() {
         return mPhone;
     }
 
@@ -48,11 +48,15 @@ public class ShortContactData implements Serializable {
         this.mPhone = mPhone;
     }
 
-    public String getLastContacted() {
+    public String getLastCall() {
         return mLastContacted;
     }
 
     public void setLastContacted(String mLastContacted) {
         this.mLastContacted = mLastContacted;
+    }
+
+    public String getFullName() {
+        return mFirstName + " " + mLastName;
     }
 }
