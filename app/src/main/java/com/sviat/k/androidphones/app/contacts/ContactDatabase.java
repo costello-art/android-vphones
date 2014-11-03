@@ -1,6 +1,9 @@
 package com.sviat.k.androidphones.app.contacts;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +22,8 @@ public class ContactDatabase {
 
         mData = new ArrayList<ShortContactData>();
 
-        generateDummyData();
+        //generateDummyData();
+        fetchContactData();
     }
 
     private void generateDummyData() {
@@ -28,11 +32,32 @@ public class ContactDatabase {
 
             cd.setFirstName("first");
             cd.setLastName("last" + i);
-            cd.setPhone(String.format("%d", 12345678+i));
+            cd.setPhone(String.format("%d", 12345678 + i));
             cd.setLastContacted(new Date().toString());
 
             mData.add(cd);
         }
+    }
+
+    private void fetchContactData() {
+        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+
+        Cursor phones = appContext.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        while (phones.moveToNext()) {
+            String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+            ShortContactData cd = new ShortContactData();
+
+            cd.setFirstName(name);
+            //cd.setLastName("last" + i);
+            cd.setPhone(phoneNumber);
+            //cd.setLastContacted(new Date().toString());
+
+            mData.add(cd);
+        }
+
+        phones.close();
     }
 
     public ShortContactData getContact(int id) {
