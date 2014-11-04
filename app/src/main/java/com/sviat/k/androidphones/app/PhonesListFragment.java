@@ -1,5 +1,6 @@
 package com.sviat.k.androidphones.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
@@ -33,6 +34,8 @@ public class PhonesListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+
+        Intent intentContactDetails = new Intent(getActivity(), ContactDetail.class);
 
 /*        Crime c = (Crime) getListAdapter().getItem(position);
         Intent intentCrimeActivity = new Intent(getActivity(), CrimeActivity.class);
