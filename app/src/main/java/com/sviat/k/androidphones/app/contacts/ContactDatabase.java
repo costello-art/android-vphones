@@ -36,8 +36,6 @@ public class ContactDatabase {
 
         mData = new HashMap<String, ContactRecord>();
         mContactResolver = appContext.getContentResolver();
-
-        fetchBasicContactInfo();
     }
 
     private void recStartTime() {
@@ -170,6 +168,7 @@ public class ContactDatabase {
      */
     @Deprecated
     public ArrayList<ContactRecord> getContacts() {
+        fetchBasicContactInfo();
         ArrayList<ContactRecord> list = new ArrayList<ContactRecord>();
 
         for (String id : mData.keySet()) {

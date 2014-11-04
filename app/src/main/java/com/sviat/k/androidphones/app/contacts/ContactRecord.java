@@ -3,6 +3,9 @@ package com.sviat.k.androidphones.app.contacts;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.net.DatagramSocket;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 

@@ -1,8 +1,10 @@
 package com.sviat.k.androidphones.app;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -18,17 +20,12 @@ import java.util.ArrayList;
  * Created by Sviat on 04.11.14.
  */
 public class ContactListFragment extends ListFragment {
-    private static final String TAG = "PhonesListFragment";
-
-    private ArrayList<ContactRecord> mContacts;
+    private static final String TAG = "ContactListFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContacts = ContactDatabase.get(getActivity()).getContacts();
-
-        ContactListAdapter adapter = new ContactListAdapter(mContacts);
-        setListAdapter(adapter);
+        new GetContactList().execute();
     }
 
     @Override
@@ -42,10 +39,25 @@ public class ContactListFragment extends ListFragment {
         startActivity(intentContactDetails);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((ContactListAdapter) getListAdapter()).notifyDataSetChanged();
+    private class GetContactList extends AsyncTask<Void, String, ArrayList<ContactRecord>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d(TAG, "starting to fetch");
+        }
+
+        @Override
+        protected ArrayList<ContactRecord> doInBackground(Void... params) {
+            return ContactDatabase.get(getActivity()).getContacts();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ContactRecord> contactRecords) {
+            super.onPostExecute(contactRecords);
+            Log.d(TAG, "fetching done");
+            ContactListAdapter adapter = new ContactListAdapter(contactRecords);
+            setListAdapter(adapter);
+        }
     }
 
     private class ContactListAdapter extends ArrayAdapter<ContactRecord> {
