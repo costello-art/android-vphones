@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class ContactListFragment extends ListFragment {
     private static final String TAG = "PhonesListFragment";
 
-    public static final String EXTRA_CONTACT_ID = "com.sviat.k.androidphones.app.contact_id";
     private ArrayList<ContactRecord> mContacts;
 
     @Override
@@ -39,7 +38,7 @@ public class ContactListFragment extends ListFragment {
         ContactRecord cr = (ContactRecord) getListAdapter().getItem(position);
         Intent intentContactDetails = new Intent(getActivity(), ContactDetailActivity.class);
 
-        intentContactDetails.putExtra(ContactListFragment.EXTRA_CONTACT_ID, cr.getId());
+        intentContactDetails.putExtra(ContactDetailFragment.EXTRA_CONTACT_ID, cr.getId());
         startActivity(intentContactDetails);
     }
 
