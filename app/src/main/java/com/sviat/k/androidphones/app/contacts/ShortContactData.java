@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by Sviat on 04.11.14.
  */
 public class ShortContactData implements Serializable {
-    private int mId;
+    private String mId;
 
     private String mFirstName;
 
@@ -16,11 +16,11 @@ public class ShortContactData implements Serializable {
 
     private String mLastContacted;
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
-    public void setId(int mId) {
+    public void setId(String mId) {
         this.mId = mId;
     }
 
