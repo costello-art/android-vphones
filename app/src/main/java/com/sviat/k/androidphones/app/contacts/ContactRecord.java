@@ -2,6 +2,7 @@ package com.sviat.k.androidphones.app.contacts;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Sviat on 04.11.14.
@@ -60,7 +61,9 @@ public class ContactRecord implements Serializable {
     }
 
     public void setLastContacted(String mLastContacted) {
-        this.mLastContacted = mLastContacted;
+        Date date = new Date();
+        date.setTime(Long.parseLong(mLastContacted));
+        this.mLastContacted = date.toString();
     }
 
     public String getFullName() {

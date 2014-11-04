@@ -62,18 +62,21 @@ public class ContactDatabase {
         recStartTime();
         int conIndexContactId = cursor.getColumnIndex(Contacts._ID);
         int colIndexDisplayName = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
-        int conIndexHasPhoneNumber = cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER);
+        int colIndexLastCall = cursor.getColumnIndex(Contacts.LAST_TIME_CONTACTED);
+        int colIndexHasPhoneNumber = cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER);
 
         while (cursor.moveToNext()) {
             ContactRecord sc = new ContactRecord();
 
-            String displayName = cursor.getString(colIndexDisplayName);
             String contactId = cursor.getString(conIndexContactId);
+            String displayName = cursor.getString(colIndexDisplayName);
+            String lastCall = cursor.getString(colIndexLastCall);
 
             sc.setId(contactId);
             sc.setDisplayName(displayName);
+            sc.setLastContacted(lastCall);
 
-            if (Integer.parseInt(cursor.getString(conIndexHasPhoneNumber)) > 0) {
+            if (Integer.parseInt(cursor.getString(colIndexHasPhoneNumber)) > 0) {
                 Cursor pCur = mContactResolver.query(uriPhoneContactInfo,
                         projectionPhone,
                         Phone.CONTACT_ID + " = ?", new String[]{contactId},
