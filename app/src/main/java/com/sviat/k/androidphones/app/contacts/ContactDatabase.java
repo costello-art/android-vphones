@@ -53,22 +53,15 @@ public class ContactDatabase {
 
     /**
      * Fetch all available phones and its types for given contact ID
-     * TODO: fetch only if (Integer.parseInt(cursor.getString(colIndexHasPhoneNumber)) > 0)
      *
      * @param id an contact id from DB
      */
     private void fetchPhones(String id) {
-        //int colIndexHasPhoneNumber = cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER);
-
-        String[] projectionPhone = new String[]{
-                Phone._ID,
-                Phone.TYPE,
-                Phone.NUMBER
-        };
-
+        recStartTime();
         Cursor pCur = mContactResolver.query(uriPhoneContactInfo,
-                projectionPhone,
-                Phone.CONTACT_ID + " = ?", new String[]{id},
+                new String[]{Phone._ID, Phone.TYPE, Phone.NUMBER},
+                Phone.CONTACT_ID + " = ?",
+                new String[]{id},
                 null);
 
         int colIndexNumber = pCur.getColumnIndex(Phone.NUMBER);
@@ -83,10 +76,16 @@ public class ContactDatabase {
         }
 
         pCur.close();
+        showOperationTime("fetch phone for " + id);
     }
 
     private void fetchBasicContactInfo() {
-        Cursor cursor = mContactResolver.query(uriCommonContactInfo, null, null, null, null);
+        Cursor cursor = mContactResolver.query(
+                uriCommonContactInfo,
+                new String[]{Contacts._ID, Contacts.DISPLAY_NAME, Contacts.LAST_TIME_CONTACTED},
+                "HAS_PHONE_NUMBER = ?",
+                new String[]{"1"},
+                Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC");
 
         recStartTime();
         int conIndexContactId = cursor.getColumnIndex(Contacts._ID);
