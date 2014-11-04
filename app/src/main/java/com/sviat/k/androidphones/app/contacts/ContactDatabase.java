@@ -155,9 +155,12 @@ public class ContactDatabase {
 
     public ArrayList<ContactPhoneRecord> requestPhones(String contactId) {
         if (mData.get(contactId).getPhones() != null) {
+            Log.d(TAG, String.format("Phones for contact id %s not null. Giving back cached data.", contactId));
             return mData.get(contactId).getPhones();
         }
 
+        Log.d(TAG, "Phones for contact id=%s is null. Going to fetch it and return");
+        fetchPhones(contactId);
         return mData.get(contactId).getPhones();
     }
 
