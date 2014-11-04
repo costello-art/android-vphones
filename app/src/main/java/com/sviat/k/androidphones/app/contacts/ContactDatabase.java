@@ -4,6 +4,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.util.Log;
@@ -21,7 +23,7 @@ public class ContactDatabase {
 
     private final Uri uriCommonContactInfo = Contacts.CONTENT_URI;
     private final Uri uriPhoneContactInfo = Phone.CONTENT_URI;
-    //private final Uri uriEmailContactInfo = CommonDataKinds.Email.CONTENT_URI;
+    private final Uri uriEmailContactInfo = Email.CONTENT_URI;
 
     private Context appContext;
     private ContentResolver mContactResolver;
@@ -110,21 +112,25 @@ public class ContactDatabase {
     }
 
     private void fetchEmails(String id) {
-            /*Cursor emailCursor = mContactResolver.query(uriEmailContactInfo,
-                    null,
-                    ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{contactId}, null);
+        Cursor emailCursor = mContactResolver.query(
+                uriEmailContactInfo,
+                null,
+                Email.CONTACT_ID + " = ?",
+                new String[]{id},
+                null);
 
-            while (emailCursor.moveToNext()) {
-                String phone = emailCursor.getString(emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
-                int type = emailCursor.getInt(emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE));
-                String s = (String) ContactsContract.CommonDataKinds.Email.getTypeLabel(appContext.getResources(), type, "");
+        int colIndexEmail = emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+        int colIndexType = emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE);
 
-                //  Log.d(TAG, s + " email: " + phone);
-            }
+        while (emailCursor.moveToNext()) {
+            String phone = emailCursor.getString(colIndexEmail);
+            int type = emailCursor.getInt(colIndexType);
+            String stringType = (String) ContactsContract.CommonDataKinds.Email.getTypeLabel(appContext.getResources(), type, "");
 
-            emailCursor.close();*/
+            Log.d(TAG, stringType + " email: " + phone);
+        }
 
-        //cursor.close();
+        emailCursor.close();
     }
 
     private void generateDummyData() {

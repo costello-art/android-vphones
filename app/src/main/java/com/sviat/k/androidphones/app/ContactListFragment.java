@@ -41,12 +41,6 @@ public class ContactListFragment extends ListFragment {
 
     private class GetContactList extends AsyncTask<Void, String, ArrayList<ContactRecord>> {
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.d(TAG, "starting to fetch");
-        }
-
-        @Override
         protected ArrayList<ContactRecord> doInBackground(Void... params) {
             return ContactDatabase.get(getActivity()).getContacts();
         }
@@ -54,7 +48,6 @@ public class ContactListFragment extends ListFragment {
         @Override
         protected void onPostExecute(ArrayList<ContactRecord> contactRecords) {
             super.onPostExecute(contactRecords);
-            Log.d(TAG, "fetching done");
             ContactListAdapter adapter = new ContactListAdapter(contactRecords);
             setListAdapter(adapter);
         }
