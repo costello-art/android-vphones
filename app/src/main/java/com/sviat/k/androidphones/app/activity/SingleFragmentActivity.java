@@ -1,8 +1,9 @@
-package com.sviat.k.androidphones.app;
+package com.sviat.k.androidphones.app.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import com.sviat.k.androidphones.app.R;
 
 /**
  * Created by Sviat on 04.11.14.

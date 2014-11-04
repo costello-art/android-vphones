@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.sviat.k.androidphones.app.activity.ContactDetail;
 import com.sviat.k.androidphones.app.contacts.ContactDatabase;
 import com.sviat.k.androidphones.app.contacts.ContactRecord;
 

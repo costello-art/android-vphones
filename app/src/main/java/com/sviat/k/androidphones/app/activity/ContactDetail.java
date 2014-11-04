@@ -1,9 +1,10 @@
-package com.sviat.k.androidphones.app;
+package com.sviat.k.androidphones.app.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-
-import java.util.UUID;
+import com.sviat.k.androidphones.app.ContactDetailFragment;
+import com.sviat.k.androidphones.app.R;
+import com.sviat.k.androidphones.app.activity.SingleFragmentActivity;
 
 /**
  * Created by Sviat on 04.11.14.
