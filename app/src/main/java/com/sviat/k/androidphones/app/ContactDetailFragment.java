@@ -90,6 +90,11 @@ public class ContactDetailFragment extends Fragment {
         protected void onPostExecute(ArrayList<ContactEmailRecord> contactEmailRecords) {
             super.onPostExecute(contactEmailRecords);
 
+            if (contactEmailRecords == null) {
+                textEmails.setText("no data");
+                return;
+            }
+
             String emails = "";
             for (ContactEmailRecord email : contactEmailRecords) {
                 emails += String.format("%s: %s\n", email.getType(), email.getEmail());

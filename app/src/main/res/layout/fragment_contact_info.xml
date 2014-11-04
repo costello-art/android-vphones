@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="+00 12 345 6789"
+                android:text="Fetching ..."
                 android:id="@+id/textViewContactPhone"/>
     </LinearLayout>
 
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="android@phone.com"
+                android:text="Fetching ..."
                 android:id="@+id/textViewContactEmail"/>
     </LinearLayout>
 
