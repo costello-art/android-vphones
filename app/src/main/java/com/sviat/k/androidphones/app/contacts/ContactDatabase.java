@@ -44,18 +44,22 @@ public class ContactDatabase {
     private void showOperationTime(String title) {
         timeEnd = System.currentTimeMillis();
 
-        Log.d(TAG, String.format("Operation \'%s\' took %d ms", title, (timeEnd - timeStart)));
+        long time = (timeEnd - timeStart);
+        Log.d(TAG, String.format("Operation \'%s\' took %d ms", title, time));
     }
 
     private void fetchContactDataAll() {
         Cursor cursor = mContactResolver.query(uriCommonContactInfo, null, null, null, null);
 
-        while (cursor.moveToNext()) {
+        recStartTime();
+        int colIndexDisplayName = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+        int conIndexContactId = cursor.getColumnIndex(ContactsContract.Contacts._ID);
 
+        while (cursor.moveToNext()) {
             ContactRecord sc = new ContactRecord();
 
-            String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            String displayName = cursor.getString(colIndexDisplayName);
+            String contactId = cursor.getString(conIndexContactId);
 
             sc.setId(contactId);
             sc.setDisplayName(displayName);
@@ -66,18 +70,21 @@ public class ContactDatabase {
                         ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{contactId},
                         null);
 
+                int colIndexNumber = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                int colIndexTypeId = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+
                 while (pCur.moveToNext()) {
-                    String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    String typeId = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+                    String phone = pCur.getString(colIndexNumber);
+                    String typeId = pCur.getString(colIndexTypeId);
                     String typeString = (String) ContactsContract.CommonDataKinds.Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(typeId), "");
 
                     sc.addPhone(typeString, phone);
                 }
 
                 pCur.close();
-
             }
 
+            //sc.addPhone("null", "null");
             mData.add(sc);
 
             /*Cursor emailCursor = mContactResolver.query(uriEmailContactInfo,
@@ -98,6 +105,8 @@ public class ContactDatabase {
         }
 
         cursor.close();
+        showOperationTime("total time");
+
     }
 
     private void generateDummyData() {
