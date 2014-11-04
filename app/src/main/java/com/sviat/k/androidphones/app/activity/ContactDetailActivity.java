@@ -9,7 +9,7 @@ import com.sviat.k.androidphones.app.activity.SingleFragmentActivity;
 /**
  * Created by Sviat on 04.11.14.
  */
-public class ContactDetail extends SingleFragmentActivity {
+public class ContactDetailActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
         //UUID crimeId = (UUID) getIntent().getSerializableExtra(CrimeFragment.EXTRA_CRIME_ID);
@@ -23,6 +23,6 @@ public class ContactDetail extends SingleFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, createFragment(), "tagContactDetail").commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, createFragment(), "tagContactDetailActivity").commit();
     }
 }

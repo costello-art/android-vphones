@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.sviat.k.androidphones.app.activity.ContactDetail;
+import com.sviat.k.androidphones.app.activity.ContactDetailActivity;
 import com.sviat.k.androidphones.app.contacts.ContactDatabase;
 import com.sviat.k.androidphones.app.contacts.ContactRecord;
 
@@ -36,7 +36,7 @@ public class PhonesListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        Intent intentContactDetails = new Intent(getActivity(), ContactDetail.class);
+        Intent intentContactDetails = new Intent(getActivity(), ContactDetailActivity.class);
 
 /*        Crime c = (Crime) getListAdapter().getItem(position);
         Intent intentCrimeActivity = new Intent(getActivity(), CrimeActivity.class);
