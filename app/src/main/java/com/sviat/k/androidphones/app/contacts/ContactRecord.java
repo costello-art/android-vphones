@@ -10,15 +10,10 @@ import java.util.Date;
 public class ContactRecord implements Serializable {
     private String mId;
 
-    private String mFirstName;
-
-    private String mLastName;
-
-    private String mPhone;
-
     private ArrayList<ContactPhoneRecord> mPhones;
 
     private String mLastContacted;
+    private String mDisplayName;
 
     public ContactRecord() {
         mPhones = new ArrayList<ContactPhoneRecord>();
@@ -32,29 +27,6 @@ public class ContactRecord implements Serializable {
         this.mId = mId;
     }
 
-    public String getFirstName() {
-        return mFirstName;
-    }
-
-    public void setFirstName(String mFirstName) {
-        this.mFirstName = mFirstName;
-    }
-
-    public String getLastName() {
-        return mLastName;
-    }
-
-    public void setLastName(String mLastName) {
-        this.mLastName = mLastName;
-    }
-
-    public String getPhoneNumber() {
-        return mPhone;
-    }
-
-    public void setPhone(String mPhone) {
-        this.mPhone = mPhone;
-    }
 
     public String getLastCall() {
         return mLastContacted;
@@ -66,22 +38,16 @@ public class ContactRecord implements Serializable {
         this.mLastContacted = date.toString();
     }
 
-    public String getFullName() {
-        return mFirstName + " " + mLastName;
-    }
-
     public ArrayList<ContactPhoneRecord> getPhones() {
         return mPhones;
     }
 
-    /**
-     * TODO: refactor
-     *
-     * @param displayName name to set
-     */
     public void setDisplayName(String displayName) {
-        mFirstName = displayName;
-        mLastName = "";
+        mDisplayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return mDisplayName;
     }
 
     public void addPhone(String type, String phone) {

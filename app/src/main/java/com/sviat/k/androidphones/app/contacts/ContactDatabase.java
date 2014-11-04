@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.util.Log;
@@ -36,7 +35,7 @@ public class ContactDatabase {
         mData = new ArrayList<ContactRecord>();
         mContactResolver = appContext.getContentResolver();
 
-        fetchContactDataAll();
+        fetchContact();
     }
 
     private void recStartTime() {
@@ -50,20 +49,55 @@ public class ContactDatabase {
         Log.d(TAG, String.format("Operation \'%s\' took %d ms", title, time));
     }
 
-    private void fetchContactDataAll() {
+    /**
+     * Fetch all available phones and its types for given contact ID
+     * TODO: fetch only if (Integer.parseInt(cursor.getString(colIndexHasPhoneNumber)) > 0)
+     *
+     * @param id an contact id from DB
+     */
+    private void fetchPhones(String id) {
+        //int colIndexHasPhoneNumber = cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER);
+
+        int recId = -1;
+        for (ContactRecord cr : mData) {
+            if (cr.getId().equals(id)) {
+                recId = mData.indexOf(cr);
+            }
+        }
+
         String[] projectionPhone = new String[]{
                 Phone._ID,
                 Phone.TYPE,
                 Phone.NUMBER
         };
 
+        Cursor pCur = mContactResolver.query(uriPhoneContactInfo,
+                projectionPhone,
+                Phone.CONTACT_ID + " = ?", new String[]{id},
+                null);
+
+        int colIndexNumber = pCur.getColumnIndex(Phone.NUMBER);
+        int colIndexTypeId = pCur.getColumnIndex(Phone.TYPE);
+
+        while (pCur.moveToNext()) {
+            String phone = pCur.getString(colIndexNumber);
+            String typeId = pCur.getString(colIndexTypeId);
+            String typeString = (String) Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(typeId), "");
+
+            mData.get(recId).addPhone(typeString, phone);
+        }
+
+        pCur.close();
+    }
+
+    private void fetchContact() {
         Cursor cursor = mContactResolver.query(uriCommonContactInfo, null, null, null, null);
 
         recStartTime();
         int conIndexContactId = cursor.getColumnIndex(Contacts._ID);
         int colIndexDisplayName = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
         int colIndexLastCall = cursor.getColumnIndex(Contacts.LAST_TIME_CONTACTED);
-        int colIndexHasPhoneNumber = cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER);
+
 
         while (cursor.moveToNext()) {
             ContactRecord sc = new ContactRecord();
@@ -76,29 +110,15 @@ public class ContactDatabase {
             sc.setDisplayName(displayName);
             sc.setLastContacted(lastCall);
 
-            if (Integer.parseInt(cursor.getString(colIndexHasPhoneNumber)) > 0) {
-                Cursor pCur = mContactResolver.query(uriPhoneContactInfo,
-                        projectionPhone,
-                        Phone.CONTACT_ID + " = ?", new String[]{contactId},
-                        null);
-
-                int colIndexNumber = pCur.getColumnIndex(Phone.NUMBER);
-                int colIndexTypeId = pCur.getColumnIndex(Phone.TYPE);
-
-                while (pCur.moveToNext()) {
-                    String phone = pCur.getString(colIndexNumber);
-                    String typeId = pCur.getString(colIndexTypeId);
-                    String typeString = (String) Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(typeId), "");
-
-                    sc.addPhone(typeString, phone);
-                }
-
-                pCur.close();
-            }
-
-            //sc.addPhone("null", "null");
             mData.add(sc);
+        }
 
+        cursor.close();
+        showOperationTime("total time");
+
+    }
+
+    private void fetchEmails(String id) {
             /*Cursor emailCursor = mContactResolver.query(uriEmailContactInfo,
                     null,
                     ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{contactId}, null);
@@ -113,21 +133,14 @@ public class ContactDatabase {
 
             emailCursor.close();*/
 
-            //cursor.close();
-        }
-
-        cursor.close();
-        showOperationTime("total time");
-
+        //cursor.close();
     }
 
     private void generateDummyData() {
         for (int i = 0; i < 15; i++) {
             ContactRecord cd = new ContactRecord();
 
-            cd.setFirstName("first");
-            cd.setLastName("last" + i);
-            cd.setPhone(String.format("%d", 12345678 + i));
+            cd.setDisplayName("name#" + i);
             cd.setLastContacted(new Date().toString());
 
             mData.add(cd);

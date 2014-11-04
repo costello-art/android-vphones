@@ -63,7 +63,7 @@ public class PhonesListFragment extends ListFragment {
             TextView contactName = (TextView) convertView.findViewById(R.id.contact_Name);
             TextView contactLastCallTime = (TextView) convertView.findViewById(R.id.contact_LastCallTime);
 
-            contactName.setText(cd.getFullName());
+            contactName.setText(cd.getDisplayName());
             contactLastCallTime.setText(cd.getLastCall());
 
             return convertView;
