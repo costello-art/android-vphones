@@ -17,15 +17,15 @@ import java.util.ArrayList;
 /**
  * Created by Sviat on 04.11.14.
  */
-public class PhonesListFragment extends ListFragment {
-
+public class ContactListFragment extends ListFragment {
     private static final String TAG = "PhonesListFragment";
+
+    public static final String EXTRA_CONTACT_ID = "com.sviat.k.androidphones.app.contact_id";
     private ArrayList<ContactRecord> mContacts;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getActivity().setTitle(R.string.crime_title);
         mContacts = ContactDatabase.get(getActivity()).getContacts();
 
         CrimeAdapter adapter = new CrimeAdapter(mContacts);
@@ -36,13 +36,11 @@ public class PhonesListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
+        ContactRecord cr = (ContactRecord) getListAdapter().getItem(position);
         Intent intentContactDetails = new Intent(getActivity(), ContactDetailActivity.class);
 
-/*        Crime c = (Crime) getListAdapter().getItem(position);
-        Intent intentCrimeActivity = new Intent(getActivity(), CrimeActivity.class);
-
-        intentCrimeActivity.putExtra(CrimeFragment.EXTRA_CRIME_ID, c.getId());
-        startActivity(intentCrimeActivity);*/
+        intentContactDetails.putExtra(ContactListFragment.EXTRA_CONTACT_ID, cr.getId());
+        startActivity(intentContactDetails);
     }
 
     @Override

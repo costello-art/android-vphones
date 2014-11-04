@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class ContactDatabase {
     private static final String TAG = "ContactDatabase";
-    public static ContactDatabase sContactDatabase;
+    private static ContactDatabase sContactDatabase;
 
     private final Uri uriCommonContactInfo = Contacts.CONTENT_URI;
     private final Uri uriPhoneContactInfo = Phone.CONTENT_URI;
@@ -29,7 +29,7 @@ public class ContactDatabase {
     private long timeStart;
     private long timeEnd;
 
-    public ContactDatabase(Context appContext) {
+    private ContactDatabase(Context appContext) {
         this.appContext = appContext;
 
         mData = new ArrayList<ContactRecord>();
