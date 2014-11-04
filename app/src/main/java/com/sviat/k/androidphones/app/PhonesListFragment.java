@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.sviat.k.androidphones.app.contacts.ContactDatabase;
-import com.sviat.k.androidphones.app.contacts.ShortContactData;
+import com.sviat.k.androidphones.app.contacts.ContactRecord;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class PhonesListFragment extends ListFragment {
 
     private static final String TAG = "PhonesListFragment";
-    private ArrayList<ShortContactData> mContacts;
+    private ArrayList<ContactRecord> mContacts;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,8 @@ public class PhonesListFragment extends ListFragment {
         ((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
-    private class CrimeAdapter extends ArrayAdapter<ShortContactData> {
-        public CrimeAdapter(ArrayList<ShortContactData> contacts) {
+    private class CrimeAdapter extends ArrayAdapter<ContactRecord> {
+        public CrimeAdapter(ArrayList<ContactRecord> contacts) {
             super(getActivity(), 0, contacts);
         }
 
@@ -58,7 +58,7 @@ public class PhonesListFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_contact, null);
             }
 
-            ShortContactData cd = (ShortContactData) getListAdapter().getItem(position);
+            ContactRecord cd = (ContactRecord) getListAdapter().getItem(position);
 
             TextView contactName = (TextView) convertView.findViewById(R.id.contact_Name);
             TextView contactPhoneNumber = (TextView) convertView.findViewById(R.id.contact_Phone);

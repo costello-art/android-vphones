@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Sviat on 04.11.14.
  */
-public class ShortContactData implements Serializable {
+public class ContactRecord implements Serializable {
     private String mId;
 
     private String mFirstName;

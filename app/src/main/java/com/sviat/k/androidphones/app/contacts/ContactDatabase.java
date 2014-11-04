@@ -21,7 +21,7 @@ public class ContactDatabase {
     private final Uri uriPhoneContactInfo = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
     private final Uri uriEmailContactInfo = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
 
-    private ArrayList<ShortContactData> mData;
+    private ArrayList<ContactRecord> mData;
     private Context appContext;
     private ContentResolver mContactResolver;
 
@@ -31,7 +31,7 @@ public class ContactDatabase {
     public ContactDatabase(Context appContext) {
         this.appContext = appContext;
 
-        mData = new ArrayList<ShortContactData>();
+        mData = new ArrayList<ContactRecord>();
         mContactResolver = appContext.getContentResolver();
 
         fetchContactDataAll();
@@ -52,7 +52,7 @@ public class ContactDatabase {
 
         while (cursor.moveToNext()) {
 
-            ShortContactData sc = new ShortContactData();
+            ContactRecord sc = new ContactRecord();
 
             String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
             String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
@@ -72,8 +72,6 @@ public class ContactDatabase {
                     String s = (String) ContactsContract.CommonDataKinds.Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(type), "");
 
                     sc.setPhone(phone);
-
-                    Log.d(TAG, s + " phone: " + phone);
                 }
 
                 pCur.close();
@@ -104,7 +102,7 @@ public class ContactDatabase {
 
     private void generateDummyData() {
         for (int i = 0; i < 15; i++) {
-            ShortContactData cd = new ShortContactData();
+            ContactRecord cd = new ContactRecord();
 
             cd.setFirstName("first");
             cd.setLastName("last" + i);
@@ -115,8 +113,8 @@ public class ContactDatabase {
         }
     }
 
-    public ShortContactData getContact(String id) {
-        for (ShortContactData cd : mData) {
+    public ContactRecord getContact(String id) {
+        for (ContactRecord cd : mData) {
             if (cd.getId().equals(id)) {
                 return cd;
             }
@@ -133,7 +131,7 @@ public class ContactDatabase {
         return sContactDatabase;
     }
 
-    public ArrayList<ShortContactData> getContacts() {
+    public ArrayList<ContactRecord> getContacts() {
         return mData;
     }
 }
