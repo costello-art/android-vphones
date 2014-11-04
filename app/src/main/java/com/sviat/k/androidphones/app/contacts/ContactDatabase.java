@@ -4,8 +4,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts;
 import android.util.Log;
+
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,9 +19,9 @@ public class ContactDatabase {
     private static final String TAG = "ContactDatabase";
     public static ContactDatabase sContactDatabase;
 
-    private final Uri uriCommonContactInfo = ContactsContract.Contacts.CONTENT_URI;
-    private final Uri uriPhoneContactInfo = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-    private final Uri uriEmailContactInfo = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
+    private final Uri uriCommonContactInfo = Contacts.CONTENT_URI;
+    private final Uri uriPhoneContactInfo = Phone.CONTENT_URI;
+    //private final Uri uriEmailContactInfo = CommonDataKinds.Email.CONTENT_URI;
 
     private ArrayList<ContactRecord> mData;
     private Context appContext;
@@ -49,11 +51,17 @@ public class ContactDatabase {
     }
 
     private void fetchContactDataAll() {
+        String[] projection = new String[]{
+                Phone._ID,
+                Phone.TYPE,
+                Phone.NUMBER
+        };
+
         Cursor cursor = mContactResolver.query(uriCommonContactInfo, null, null, null, null);
 
         recStartTime();
-        int colIndexDisplayName = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-        int conIndexContactId = cursor.getColumnIndex(ContactsContract.Contacts._ID);
+        int conIndexContactId = cursor.getColumnIndex(Contacts._ID);
+        int colIndexDisplayName = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
 
         while (cursor.moveToNext()) {
             ContactRecord sc = new ContactRecord();
@@ -64,19 +72,19 @@ public class ContactDatabase {
             sc.setId(contactId);
             sc.setDisplayName(displayName);
 
-            if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+            if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER))) > 0) {
                 Cursor pCur = mContactResolver.query(uriPhoneContactInfo,
-                        null,
-                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{contactId},
+                        projection,
+                        Phone.CONTACT_ID + " = ?", new String[]{contactId},
                         null);
 
-                int colIndexNumber = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                int colIndexTypeId = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+                int colIndexNumber = pCur.getColumnIndex(Phone.NUMBER);
+                int colIndexTypeId = pCur.getColumnIndex(Phone.TYPE);
 
                 while (pCur.moveToNext()) {
                     String phone = pCur.getString(colIndexNumber);
                     String typeId = pCur.getString(colIndexTypeId);
-                    String typeString = (String) ContactsContract.CommonDataKinds.Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(typeId), "");
+                    String typeString = (String) Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(typeId), "");
 
                     sc.addPhone(typeString, phone);
                 }
