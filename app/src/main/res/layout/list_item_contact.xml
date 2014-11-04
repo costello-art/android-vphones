@@ -12,22 +12,12 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="First Last name"/>
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/contact_Phone"
-            android:layout_below="@id/contact_Name"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:paddingLeft="8dp"
-            android:text="+000 12 345 678 9"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/contact_Name"
-            android:layout_alignRight="@id/contact_Phone"
+            android:layout_alignRight="@id/contact_Name"
             android:id="@+id/contact_LastCallTime"
             android:padding="2dp"
             android:text="last contacted"/>
