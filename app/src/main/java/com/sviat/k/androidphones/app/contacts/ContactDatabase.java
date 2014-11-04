@@ -4,10 +4,10 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.util.Log;
-
-import android.provider.ContactsContract.CommonDataKinds.Phone;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +51,7 @@ public class ContactDatabase {
     }
 
     private void fetchContactDataAll() {
-        String[] projection = new String[]{
+        String[] projectionPhone = new String[]{
                 Phone._ID,
                 Phone.TYPE,
                 Phone.NUMBER
@@ -62,6 +62,7 @@ public class ContactDatabase {
         recStartTime();
         int conIndexContactId = cursor.getColumnIndex(Contacts._ID);
         int colIndexDisplayName = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
+        int conIndexHasPhoneNumber = cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER);
 
         while (cursor.moveToNext()) {
             ContactRecord sc = new ContactRecord();
@@ -72,9 +73,9 @@ public class ContactDatabase {
             sc.setId(contactId);
             sc.setDisplayName(displayName);
 
-            if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER))) > 0) {
+            if (Integer.parseInt(cursor.getString(conIndexHasPhoneNumber)) > 0) {
                 Cursor pCur = mContactResolver.query(uriPhoneContactInfo,
-                        projection,
+                        projectionPhone,
                         Phone.CONTACT_ID + " = ?", new String[]{contactId},
                         null);
 
