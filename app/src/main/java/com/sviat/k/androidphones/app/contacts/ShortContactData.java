@@ -59,4 +59,13 @@ public class ShortContactData implements Serializable {
     public String getFullName() {
         return mFirstName + " " + mLastName;
     }
+
+    /**
+     * TODO: refactor
+     * @param displayName name to set
+     */
+    public void setDisplayName(String displayName) {
+        mFirstName = displayName;
+        mLastName = "";
+    }
 }

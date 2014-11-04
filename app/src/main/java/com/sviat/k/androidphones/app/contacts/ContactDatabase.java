@@ -17,57 +17,61 @@ public class ContactDatabase {
     private static final String TAG = "ContactDatabase";
     public static ContactDatabase sContactDatabase;
 
+    private final Uri uriCommonContactInfo = ContactsContract.Contacts.CONTENT_URI;
+    private final Uri uriPhoneContactInfo = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+    private final Uri uriEmailContactInfo = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
+
     private ArrayList<ShortContactData> mData;
     private Context appContext;
+    private ContentResolver mContactResolver;
+
+    private long timeStart;
+    private long timeEnd;
 
     public ContactDatabase(Context appContext) {
         this.appContext = appContext;
 
         mData = new ArrayList<ShortContactData>();
+        mContactResolver = appContext.getContentResolver();
 
         fetchContactDataAll();
     }
 
+    private void recStartTime() {
+        timeStart = System.currentTimeMillis();
+    }
+
+    private void showOperationTime(String title) {
+        timeEnd = System.currentTimeMillis();
+
+        Log.d(TAG, String.format("Operation \'%s\' took %d ms", title, (timeEnd - timeStart)));
+    }
+
     private void fetchContactDataAll() {
-        final Uri uriCommonContactInfo = ContactsContract.Contacts.CONTENT_URI;
-        final Uri uriPhoneContactInfo = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-        final Uri uriEmailContactInfo = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
+        Cursor cursor = mContactResolver.query(uriCommonContactInfo, null, null, null, null);
 
-        ContentResolver contactResolver = appContext.getContentResolver();
-
-        long ts = System.currentTimeMillis();
-        Cursor cursor = contactResolver.query(uriCommonContactInfo, null, null, null, null);
-        long te = System.currentTimeMillis();
-
-        System.out.println(String.format("pick time: %d ms", (te - ts)));
-
-        int count = 0;
         while (cursor.moveToNext()) {
 
-            ts = System.currentTimeMillis();
+            ShortContactData sc = new ShortContactData();
+
             String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
             String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            te = System.currentTimeMillis();
 
-            System.out.println(String.format("contact info pick time: %d ms", (te - ts)));
-
-            System.out.println(String.format("%s %s", contactId, displayName));
+            sc.setId(contactId);
+            sc.setDisplayName(displayName);
 
             if (Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-                ts = System.currentTimeMillis();
-                Cursor pCur = contactResolver.query(uriPhoneContactInfo,
+                Cursor pCur = mContactResolver.query(uriPhoneContactInfo,
                         null,
                         ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{contactId},
                         null);
-                te = System.currentTimeMillis();
-
-                System.out.println(String.format("contact phone info pick time: %d ms", (te - ts)));
 
                 while (pCur.moveToNext()) {
                     String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                     String type = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
                     String s = (String) ContactsContract.CommonDataKinds.Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(type), "");
 
+                    sc.setPhone(phone);
 
                     Log.d(TAG, s + " phone: " + phone);
                 }
@@ -76,7 +80,9 @@ public class ContactDatabase {
 
             }
 
-            Cursor emailCursor = contactResolver.query(uriEmailContactInfo,
+            mData.add(sc);
+
+            /*Cursor emailCursor = mContactResolver.query(uriEmailContactInfo,
                     null,
                     ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", new String[]{contactId}, null);
 
@@ -88,14 +94,12 @@ public class ContactDatabase {
                 //  Log.d(TAG, s + " email: " + phone);
             }
 
-            emailCursor.close();
+            emailCursor.close();*/
 
             //cursor.close();
         }
 
         cursor.close();
-
-        System.out.println("count = " + count);
     }
 
     private void generateDummyData() {
