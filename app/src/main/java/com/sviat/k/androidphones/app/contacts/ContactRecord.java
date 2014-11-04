@@ -29,6 +29,10 @@ public class ContactRecord implements Serializable {
 
 
     public String getLastCall() {
+        if (mLastContacted == null) {
+            return "no data";
+        }
+
         return mLastContacted;
     }
 

@@ -27,7 +27,7 @@ public class ContactListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         mContacts = ContactDatabase.get(getActivity()).getContacts();
 
-        CrimeAdapter adapter = new CrimeAdapter(mContacts);
+        ContactListAdapter adapter = new ContactListAdapter(mContacts);
         setListAdapter(adapter);
     }
 
@@ -45,11 +45,11 @@ public class ContactListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((CrimeAdapter) getListAdapter()).notifyDataSetChanged();
+        ((ContactListAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
-    private class CrimeAdapter extends ArrayAdapter<ContactRecord> {
-        public CrimeAdapter(ArrayList<ContactRecord> contacts) {
+    private class ContactListAdapter extends ArrayAdapter<ContactRecord> {
+        public ContactListAdapter(ArrayList<ContactRecord> contacts) {
             super(getActivity(), 0, contacts);
         }
 

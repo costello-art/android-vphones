@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.sviat.k.androidphones.app.contacts.ContactDatabase;
 import com.sviat.k.androidphones.app.contacts.ContactPhoneRecord;
-import com.sviat.k.androidphones.app.contacts.ContactRecord;
 
 /**
  * Created by Sviat on 04.11.14.
  */
 public class ContactDetailFragment extends Fragment {
     public static final String EXTRA_CONTACT_ID = "com.sviat.k.androidphones.app.contact_id";
-    private ContactRecord contactRecord;
+    private ContactDatabase contactDatabase;
+    private String contactId;
 
     public static Fragment newInstance(String contactId) {
         Bundle args = new Bundle();
@@ -30,31 +30,30 @@ public class ContactDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String contactId = (String) getArguments().getSerializable(EXTRA_CONTACT_ID);
+        contactId = (String) getArguments().getSerializable(EXTRA_CONTACT_ID);
 
-        contactRecord = ContactDatabase.get(getActivity().getApplicationContext()).getContact(contactId);
+        contactDatabase = ContactDatabase.get(getActivity().getApplicationContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_contact_info, container, false);
 
         TextView contactName = (TextView) v.findViewById(R.id.textViewContactName);
         TextView textPhones = (TextView) v.findViewById(R.id.textViewContactPhone);
-        TextView textLastCall = (TextView) v.findViewById(R.id.contact_LastCallTime);
+        TextView textLastCall = (TextView) v.findViewById(R.id.textViewContactLastCall);
 
-        contactName.setText(contactRecord.getDisplayName());
+        contactName.setText(contactDatabase.getContact(contactId).getDisplayName());
 
         String phones = "";
 
-        for (ContactPhoneRecord phone : contactRecord.getPhones()) {
+        for (ContactPhoneRecord phone : contactDatabase.requestPhones(contactId)) {
             phones += String.format("%s: %s\n", phone.getType(), phone.getPhone());
         }
 
         textPhones.setText(phones);
 
-        //textLastCall.setText(contactRecord.getLastCall());
+        textLastCall.setText(contactDatabase.getContact(contactId).getLastCall());
 
         return v;
     }

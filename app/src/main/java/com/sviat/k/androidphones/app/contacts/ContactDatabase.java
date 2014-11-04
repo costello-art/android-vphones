@@ -10,7 +10,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
+import java.util.HashMap;
 
 /**
  * Created by Sviat on 04.11.14.
@@ -23,9 +23,10 @@ public class ContactDatabase {
     private final Uri uriPhoneContactInfo = Phone.CONTENT_URI;
     //private final Uri uriEmailContactInfo = CommonDataKinds.Email.CONTENT_URI;
 
-    private ArrayList<ContactRecord> mData;
     private Context appContext;
     private ContentResolver mContactResolver;
+
+    private HashMap<String, ContactRecord> mData;
 
     private long timeStart;
     private long timeEnd;
@@ -33,10 +34,10 @@ public class ContactDatabase {
     private ContactDatabase(Context appContext) {
         this.appContext = appContext;
 
-        mData = new ArrayList<ContactRecord>();
+        mData = new HashMap<String, ContactRecord>();
         mContactResolver = appContext.getContentResolver();
 
-        fetchContact();
+        fetchBasicContactInfo();
     }
 
     private void recStartTime() {
@@ -59,13 +60,6 @@ public class ContactDatabase {
     private void fetchPhones(String id) {
         //int colIndexHasPhoneNumber = cursor.getColumnIndex(Contacts.HAS_PHONE_NUMBER);
 
-        int recId = -1;
-        for (ContactRecord cr : mData) {
-            if (cr.getId().equals(id)) {
-                recId = mData.indexOf(cr);
-            }
-        }
-
         String[] projectionPhone = new String[]{
                 Phone._ID,
                 Phone.TYPE,
@@ -85,13 +79,13 @@ public class ContactDatabase {
             String typeId = pCur.getString(colIndexTypeId);
             String typeString = (String) Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(typeId), "");
 
-            mData.get(recId).addPhone(typeString, phone);
+            mData.get(id).addPhone(typeString, phone);
         }
 
         pCur.close();
     }
 
-    private void fetchContact() {
+    private void fetchBasicContactInfo() {
         Cursor cursor = mContactResolver.query(uriCommonContactInfo, null, null, null, null);
 
         recStartTime();
@@ -101,22 +95,21 @@ public class ContactDatabase {
 
 
         while (cursor.moveToNext()) {
-            ContactRecord sc = new ContactRecord();
+            ContactRecord contactRecord = new ContactRecord();
 
             String contactId = cursor.getString(conIndexContactId);
             String displayName = cursor.getString(colIndexDisplayName);
             String lastCall = cursor.getString(colIndexLastCall);
 
-            sc.setId(contactId);
-            sc.setDisplayName(displayName);
-            sc.setLastContacted(lastCall);
+            contactRecord.setId(contactId);
+            contactRecord.setDisplayName(displayName);
+            contactRecord.setLastContacted(lastCall);
 
-            mData.add(sc);
+            mData.put(contactId, contactRecord);
         }
 
         cursor.close();
         showOperationTime("total time");
-
     }
 
     private void fetchEmails(String id) {
@@ -144,18 +137,12 @@ public class ContactDatabase {
             cd.setDisplayName("name#" + i);
             cd.setLastContacted(new Date().toString());
 
-            mData.add(cd);
+            mData.put(String.valueOf(i), cd);
         }
     }
 
     public ContactRecord getContact(String id) {
-        for (ContactRecord cd : mData) {
-            if (cd.getId().equals(id)) {
-                return cd;
-            }
-        }
-
-        return null;
+        return mData.get(id);
     }
 
     public static ContactDatabase get(Context c) {
@@ -166,7 +153,27 @@ public class ContactDatabase {
         return sContactDatabase;
     }
 
+    public ArrayList<ContactPhoneRecord> requestPhones(String contactId) {
+        if (mData.get(contactId).getPhones() != null) {
+            return mData.get(contactId).getPhones();
+        }
+
+        return mData.get(contactId).getPhones();
+    }
+
+    /**
+     * Get list of all contacts. Deprecated.
+     *
+     * @return list of all contacts
+     */
+    @Deprecated
     public ArrayList<ContactRecord> getContacts() {
-        return mData;
+        ArrayList<ContactRecord> list = new ArrayList<ContactRecord>();
+
+        for (String id : mData.keySet()) {
+            list.add(mData.get(id));
+        }
+
+        return list;
     }
 }
