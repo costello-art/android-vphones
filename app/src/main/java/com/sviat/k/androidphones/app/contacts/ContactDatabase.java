@@ -68,10 +68,10 @@ public class ContactDatabase {
 
                 while (pCur.moveToNext()) {
                     String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    String type = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
-                    String s = (String) ContactsContract.CommonDataKinds.Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(type), "");
+                    String typeId = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+                    String typeString = (String) ContactsContract.CommonDataKinds.Phone.getTypeLabel(appContext.getResources(), Integer.parseInt(typeId), "");
 
-                    sc.setPhone(phone);
+                    sc.addPhone(typeString, phone);
                 }
 
                 pCur.close();

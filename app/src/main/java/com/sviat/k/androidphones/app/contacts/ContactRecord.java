@@ -1,6 +1,7 @@
 package com.sviat.k.androidphones.app.contacts;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Sviat on 04.11.14.
@@ -14,7 +15,13 @@ public class ContactRecord implements Serializable {
 
     private String mPhone;
 
+    private ArrayList<ContactPhoneRecord> mPhones;
+
     private String mLastContacted;
+
+    public ContactRecord() {
+        mPhones = new ArrayList<ContactPhoneRecord>();
+    }
 
     public String getId() {
         return mId;
@@ -60,12 +67,21 @@ public class ContactRecord implements Serializable {
         return mFirstName + " " + mLastName;
     }
 
+    public ArrayList<ContactPhoneRecord> getPhones() {
+        return mPhones;
+    }
+
     /**
      * TODO: refactor
+     *
      * @param displayName name to set
      */
     public void setDisplayName(String displayName) {
         mFirstName = displayName;
         mLastName = "";
+    }
+
+    public void addPhone(String type, String phone) {
+        mPhones.add(new ContactPhoneRecord(type, phone));
     }
 }
