@@ -15,9 +15,7 @@ import java.util.UUID;
 public class ContactDetailActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
-
-        String contactId = (String) getIntent().getStringExtra(ContactDetailFragment.EXTRA_CONTACT_ID);
-        //UUID contactId = (UUID) getIntent().getSerializableExtra(ContactDetailFragment.EXTRA_CONTACT_ID);
+        String contactId = getIntent().getStringExtra(ContactDetailFragment.EXTRA_CONTACT_ID);
 
         return ContactDetailFragment.newInstance(contactId);
     }
