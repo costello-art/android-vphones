@@ -10,58 +10,88 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
             android:text="CONTACT_NAME"
             android:id="@+id/textViewContactName" android:layout_gravity="right"/>
-    <TextView
+
+    <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="CONTACT_LAST_NAME"
-            android:id="@+id/textViewContactNameLast" android:layout_gravity="right"/>
-
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Phone:"/>
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="8dp"
+            android:orientation="vertical">
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Phone"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="+00 12 345 6789"
                 android:id="@+id/textViewContactPhone"/>
     </LinearLayout>
 
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="E-mail:"/>
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="8dp">
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="E-mail"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="android@phone.com"
                 android:id="@+id/textViewContactEmail"/>
     </LinearLayout>
 
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Last contacted:"/>
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="32dp"
+            android:layout_marginLeft="8dp">
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="2014.11.03 at 17:30:03"
-                android:id="@+id/textViewContactLastCall"/>
+                android:text="Other info"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Last contacted:"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="2014.11.03 at 17:30:03"
+                    android:id="@+id/textViewContactLastCall"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
