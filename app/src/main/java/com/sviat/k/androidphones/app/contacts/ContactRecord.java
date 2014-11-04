@@ -1,11 +1,6 @@
 package com.sviat.k.androidphones.app.contacts;
 
-import android.util.Log;
-
 import java.io.Serializable;
-import java.net.DatagramSocket;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,6 +12,7 @@ public class ContactRecord implements Serializable {
     private String mId;
 
     private ArrayList<ContactPhoneRecord> mPhones;
+    private ArrayList<ContactEmailRecord> mEmails;
 
     private String mLastContacted;
     private String mDisplayName;
@@ -27,6 +23,14 @@ public class ContactRecord implements Serializable {
 
     public void setId(String mId) {
         this.mId = mId;
+    }
+
+    public void setDisplayName(String displayName) {
+        mDisplayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return mDisplayName;
     }
 
     public String getLastCall() {
@@ -43,24 +47,27 @@ public class ContactRecord implements Serializable {
         this.mLastContacted = date.toString();
     }
 
-    public ArrayList<ContactPhoneRecord> getPhones() {
-        return mPhones;
-    }
-
-    public void setDisplayName(String displayName) {
-        mDisplayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return mDisplayName;
-    }
-
     public void addPhone(String type, String phone) {
         if (mPhones == null) {
-            Log.d(TAG, String.format("Contact \'%s\' has no phones list'", getId()));
             mPhones = new ArrayList<ContactPhoneRecord>();
         }
 
         mPhones.add(new ContactPhoneRecord(type, phone));
+    }
+
+    public ArrayList<ContactPhoneRecord> getPhones() {
+        return mPhones;
+    }
+
+    public void addEmail(String type, String email) {
+        if (mEmails == null) {
+            mEmails = new ArrayList<ContactEmailRecord>();
+        }
+
+        mEmails.add(new ContactEmailRecord(type, email));
+    }
+
+    public ArrayList<ContactEmailRecord> getEmails() {
+        return mEmails;
     }
 }

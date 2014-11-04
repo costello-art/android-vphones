@@ -123,11 +123,11 @@ public class ContactDatabase {
         int colIndexType = emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.TYPE);
 
         while (emailCursor.moveToNext()) {
-            String phone = emailCursor.getString(colIndexEmail);
+            String email = emailCursor.getString(colIndexEmail);
             int type = emailCursor.getInt(colIndexType);
             String stringType = (String) ContactsContract.CommonDataKinds.Email.getTypeLabel(appContext.getResources(), type, "");
 
-            Log.d(TAG, stringType + " email: " + phone);
+            mData.get(id).addPhone(stringType, email);
         }
 
         emailCursor.close();
@@ -165,6 +165,15 @@ public class ContactDatabase {
         Log.d(TAG, "Phones for contact id=%s is null. Going to fetch it and return");
         fetchPhones(contactId);
         return mData.get(contactId).getPhones();
+    }
+
+    public ArrayList<ContactEmailRecord> requestEmails(String contactId) {
+        if (mData.get(contactId).getEmails() != null) {
+            return mData.get(contactId).getEmails();
+        }
+
+        fetchEmails(contactId);
+        return mData.get(contactId).getEmails();
     }
 
     /**
