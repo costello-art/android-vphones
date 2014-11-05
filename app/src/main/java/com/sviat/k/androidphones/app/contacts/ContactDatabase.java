@@ -181,7 +181,6 @@ public class ContactDatabase {
      *
      * @return list of all contacts
      */
-    @Deprecated
     public ArrayList<ContactRecord> getContacts() {
         fetchBasicContactInfo();
         ArrayList<ContactRecord> list = new ArrayList<ContactRecord>();
