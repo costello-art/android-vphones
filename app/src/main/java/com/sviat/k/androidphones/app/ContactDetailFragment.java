@@ -53,54 +53,51 @@ public class ContactDetailFragment extends Fragment {
         contactName.setText(contactDatabase.getContact(contactId).getDisplayName());
         textLastCall.setText(contactDatabase.getContact(contactId).getLastCall());
 
-        new FetchPhonelInfo().execute();
-        new FetchEmailInfo().execute();
+        new FetchPhoneAndEmails().execute();
 
         return v;
     }
 
-    private class FetchPhonelInfo extends AsyncTask<Void, String, ArrayList<ContactPhoneRecord>> {
+    private class FetchPhoneAndEmails extends AsyncTask<Void, Void, Void> {
+
+        private ArrayList<ContactEmailRecord> contactEmailRecords;
+        private ArrayList<ContactPhoneRecord> contactPhoneRecords;
 
         @Override
-        protected ArrayList<ContactPhoneRecord> doInBackground(Void... params) {
-            return contactDatabase.requestPhones(contactId);
+        protected Void doInBackground(Void... params) {
+            contactPhoneRecords = contactDatabase.requestPhones(contactId);
+            contactEmailRecords = contactDatabase.requestEmails(contactId);
+
+            return null;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<ContactPhoneRecord> contactPhoneRecords) {
-            super.onPostExecute(contactPhoneRecords);
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
 
-            String phones = "";
-            for (ContactPhoneRecord phone : contactPhoneRecords) {
-                phones += String.format("%s: %s\n", phone.getType(), phone.getPhone());
+            if (contactPhoneRecords == null) {
+                textPhones.setText("no data");
+            } else {
+                StringBuilder phones = new StringBuilder();
+
+                for (ContactPhoneRecord phone : contactPhoneRecords) {
+                    phones.append(String.format("%s: %s\n", phone.getType(), phone.getPhone()));
+                }
+
+                textPhones.setText(phones);
             }
-
-            textPhones.setText(phones);
-        }
-    }
-
-    private class FetchEmailInfo extends AsyncTask<Void, String, ArrayList<ContactEmailRecord>> {
-
-        @Override
-        protected ArrayList<ContactEmailRecord> doInBackground(Void... params) {
-            return contactDatabase.requestEmails(contactId);
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<ContactEmailRecord> contactEmailRecords) {
-            super.onPostExecute(contactEmailRecords);
 
             if (contactEmailRecords == null) {
                 textEmails.setText("no data");
-                return;
+            } else {
+                StringBuilder emails = new StringBuilder();
+                for (ContactEmailRecord email : contactEmailRecords) {
+                    emails.append(String.format("%s: %s\n", email.getType(), email.getEmail()));
+                }
+
+                textEmails.setText(emails);
             }
 
-            String emails = "";
-            for (ContactEmailRecord email : contactEmailRecords) {
-                emails += String.format("%s: %s\n", email.getType(), email.getEmail());
-            }
-
-            textEmails.setText(emails);
         }
     }
 }
